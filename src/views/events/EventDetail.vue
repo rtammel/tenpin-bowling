@@ -83,9 +83,6 @@
             </div>
             <div v-else class="p-[16px] my-[32px] text-center">No registered players yet.</div>
           </div>
-          <div v-if="activeTab === 'files'">
-            <div class="p-[16px] my-[32px] text-center">No files available.</div>
-          </div>
           <div v-if="activeTab === 'stats'">
             <div v-if="data.stats.countries.length">
               <h2>Player Stats by Country</h2>
@@ -150,7 +147,6 @@ const data = ref<EventData>({
 const tabs = ref([
   { id: 'squads', name: 'Squads' },
   { id: 'players', name: 'Players' },
-  { id: 'files', name: 'Files' },
   { id: 'stats', name: 'Stats' }
 ]);
 
