@@ -6,7 +6,7 @@ import Register from '@/views/Register.vue'
 import Profile from '@/views/Profile.vue'
 import Events from '@/views/events/Events.vue';
 import EventDetail from '@/views/events/EventDetail.vue';
-import Registration from '@/views/events/Registration.vue';
+//import Registration from '@/views/events/Registration.vue';
 import Scorecard from '@/views/Scorecard.vue';
 import Livescores from '@/views/Livescores.vue';
 import Livescores2 from '@/views/Livescores2.vue';
@@ -18,9 +18,11 @@ import ResultEventPlayers from '@/views/results/ResultEventPlayers.vue';
 import ResultEventSquads from '@/views/results/ResultEventSquads.vue';
 import ResultEventStandings from '@/views/results/ResultEventStandings.vue';
 import Squad from '@/views/Squad.vue';
+import MyBookings from '@/views/user/MyBookings.vue';
+import UserResults from '@/views/user/UserResults.vue';
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/tenpin-bowling/'),
   routes: [
     {
       path: '/',
@@ -37,8 +39,18 @@ const router = createRouter({
       meta: { requiresGuest: true },
     },
     {
-      path: '/profile',
+      path: '/user/profile',
       component: Profile,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/user/bookings',
+      component: MyBookings,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/user/results',
+      component: UserResults,
       meta: { requiresAuth: true },
     },
     {
@@ -51,8 +63,7 @@ const router = createRouter({
     },
     {
       path: '/events/register/:eventId',
-      component: Registration,
-      meta: { requiresAuth: true },
+      redirect: '/events',
     },
     { path: '/:pathMatch(.*)*',
       redirect: '/',

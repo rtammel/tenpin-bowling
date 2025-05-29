@@ -5,13 +5,13 @@
       <div v-if="data.event">
         <div :style="{ backgroundImage: `linear-gradient(rgba(77,23,154,0.7),rgba(77,23,154,0.7)),url('${data.event.image_url}')` }" class="text-white px-[42px] py-[80px] lg:p-[112px] bg-cover bg-center text-center mb-[24px] rounded-xl bg-no-repeat">
           <h1 class="text-[28px] lg:text-[32px] font-bold">{{ data.event.event_name }}</h1>
-          <a v-if="new Date(data.event.end_date) > new Date() && data.event.squads?.length" :href="`/events/register/${data.event.event_id}`" class="inline-block h-[48px] leading-[48px] mt-10 px-6 bg-white text-violet-800 font-bold rounded-[8px] hover:text-violet-900 hover:bg-violet-100 transition duration-300">Register to the event</a>
+          <a v-if="canRegister" :href="`${baseUrl}events/register/${data.event.event_id}`" class="inline-block h-[48px] leading-[48px] mt-10 px-6 bg-white text-violet-800 font-bold rounded-[8px] hover:text-violet-900 hover:bg-violet-100 transition duration-300">Register to the event</a>
         </div>
         <div class="flex justify-center space-x-2 border-b border-gray-200">
           <button
             v-for="tab in tabs"
             :key="tab.id"
-            :class="['p-4 font-medium transition', activeTab === tab.id ? 'mb-0 border-b-[4px] border-blue-600 text-blue-600' : 'mb-[4px] text-gray-500']"
+            :class="['p-4 font-medium transition', activeTab === tab.id ? 'mb-0 border-b-[4px] border-violet-600 text-violet-600' : 'mb-[4px] hover:text-violet-600 text-gray-500']"
             @click="activeTab = tab.id">
             {{ tab.name }}
           </button>
@@ -22,7 +22,7 @@
               <div v-for="group in groupedSquads" :key="group.date" class="flex flex-col">
                 <div class="mt-[30px] mb-[16px]"><h3 class="text-[22px] font-bold">{{ formatDate(group.date) }}</h3></div>
                 <div class="border border-gray-200 rounded-xl">
-                  <RouterLink v-for="squad in group.squads" :key="squad.squad_id" :to="'/squads/' + squad.squad_id" class="block w-full p-[16px] md:px-[40px] md:py-[20px] border-b border-gray-200 last:border-none hover:bg-gray-50 transition duration-300">
+                  <RouterLink v-for="squad in group.squads" :key="squad.squad_id" :to="'/squads/' + squad.squad_id" class="block w-full p-[16px] md:px-[32px] md:py-[20px] border-b border-gray-200 last:border-none hover:bg-gray-50 transition duration-300">
                     <div class="flex items-stretch w-full justify-flex-start">
                       <div class="flex flex-col md:flex-row w-full">
                         <div class="flex w-[300px] flex-col pr-[40px] justify-center">
@@ -34,7 +34,7 @@
                             <strong class="text-[24px]">€{{ squad.entry_price }}</strong>
                             <span class="uppercase text-[12px] text-gray-500 ml-2">Entry</span>
                           </div>
-                          <div class="md:mx-[16px]">
+                          <div v-if="squad.reentry_price" class="md:mx-[16px]">
                             <strong class="text-[24px]">€{{ squad.reentry_price }}</strong>
                             <span class="uppercase text-[12px] text-gray-500 ml-2">1st re-entry</span>
                           </div>
@@ -75,7 +75,7 @@
                       {{ user.gender }}
                     </td>
                     <td v-for="(squad, index) in maxSquads" :key="index" class="p-4 whitespace-nowrap text-sm text-center">
-                      <RouterLink :to="`/squads/${user.squadData[index].squad_id}`" class="text-violet-600 hover:underline">{{ user.squadData[index].squad_name }}</RouterLink>
+                      <RouterLink v-if="user.squadData[index]" :to="`/squads/${user.squadData[index].squad_id}`" class="text-violet-600 hover:underline">{{ user.squadData[index].squad_name }}</RouterLink>
                     </td>
                   </tr>
                 </tbody>
@@ -84,13 +84,31 @@
             <div v-else class="p-[16px] my-[32px] text-center">No registered players yet.</div>
           </div>
           <div v-if="activeTab === 'stats'">
-            <div v-if="data.stats.countries.length">
-              <h2>Player Stats by Country</h2>
-              <ul>
-                <li v-for="countryStat in data.stats.countries" :key="countryStat.user_country">
-                  {{ countryStat.user_country }}: {{ countryStat.user_count }} players
-                </li>
-              </ul>
+            <div v-if="data.stats.countries.length" class="mt-[30px] mb-[48px]">
+              <h2 class="px-4 py-3 mb-4 text-[24px] font-bold">Players per country</h2>
+              <table class="w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th scope="col" colspan="2" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Country</th>
+                    <th scope="col" class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Players</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-slate-200">
+                  <tr v-for="(country, index) in data.stats.countries" :key="index">
+                    <td class="p-4 whitespace-nowrap text-sm">
+                      {{ country.user_country }}
+                    </td>
+                    <td class="p-4 whitespace-nowrap text-sm w-1/2">
+                      <div class="flex h-[20px] bg-gray-100 rounded-full overflow-hidden">
+                        <div class="flex bg-violet-500 overflow-hidden" :style="{ width: (country.user_count / data.stats.total_players) * 100 + '%' }"></div>
+                      </div>
+                    </td>
+                    <td class="p-4 whitespace-nowrap text-sm text-center">
+                      {{ country.user_count }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             <div v-else class="p-[16px] my-[32px] text-center">No stats available.</div>
           </div>
@@ -128,6 +146,7 @@ import Spinner from "@/components/Spinner.vue";
 import Map from '@/components/Map.vue';
 
 const eventService = new EventService();
+const baseUrl = import.meta.env.BASE_URL || '/';
 const route = useRoute();
 const router = useRouter();
 const eventId = route.params.eventId as string;
@@ -166,6 +185,14 @@ const formattedUsers = computed(() =>
   }))
 );
 
+const canRegister = computed(() => {
+  if (!data.value.event) return false;
+  console.log(data.value.event.end_date);
+  const isFutureEvent = new Date(data.value.event.end_date) > new Date();
+  const hasSquads = data.value.squads.length > 0;
+  return isFutureEvent && hasSquads;
+});
+
 const maxSquads = computed(() =>
   Math.max(...data.value.users.map((user) => user.squads.length), 0)
 );
@@ -186,7 +213,7 @@ const groupedSquads = computed(() => {
   return Object.values(groups).sort((a, b) => a.date.localeCompare(b.date));
 });
 
-onMounted(async () => {
+const fetchData = async () => {
   try {
     data.value = await eventService.getEventById(eventId);
   } catch {
@@ -194,5 +221,10 @@ onMounted(async () => {
   } finally {
     loading.value = false;
   }
+}
+
+onMounted(() => {
+  fetchData();
 });
+
 </script>

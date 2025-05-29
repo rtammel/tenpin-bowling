@@ -33,6 +33,6 @@ import { formatDateShort } from "@/utils/formatDate";
 defineProps<{link: string, event: Event}>();
 
 const getFlagUrl = (code: string): string => {
-  return `/flags/${code}.svg`;
+  return `${import.meta.env.BASE_URL}flags/${code}.svg`;
 };
 </script>

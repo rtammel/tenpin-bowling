@@ -15,7 +15,6 @@ export class BaseService {
     this.api.interceptors.response.use(
       (response) => response,
       async (error) => {
-        console.log(error.response?.status);
         if (error.response?.status === 403) {
           try {
             const authService = new AuthService();

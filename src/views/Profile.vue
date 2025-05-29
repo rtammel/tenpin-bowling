@@ -38,26 +38,27 @@
                 <input v-model="user.clubname" class="w-full border border-gray-300 hover:border-gray-400 rounded-[8px] px-3 py-2 transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400"/>
               </div>
             </div>
+            <div class="flex flex-col md:flex-row md:gap-4 w-full md:mb-4">
+              <div class="mb-4 w-full">
+                <label>Country:</label>
+                <select v-model="user.country">
+                  <option v-for="country in countries" :key="country.code" :value="country.name">
+                    {{ country.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="mb-4 w-full">
+                <label>Phone Number:</label>
+                <input v-model="user.phonenumber" type="tel" class="w-full border border-gray-300 hover:border-gray-400 rounded-[8px] px-3 py-2 transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400"/>
+              </div>
+            </div>
             <h2 class="test-[20px] font-bold mb-4">Profile Picture</h2>
             <div class="flex items-center mb-4">
-              <img v-if="user?.profilepicture" :src="'http://localhost:3000' + user.profilepicture" alt="Profile Picture" class="rounded-full w-[120px] h-[120px]" />
-              <img v-if="previewImage" :src="previewImage" alt="Profile Preview" class="preview-img" />
+              <img v-if="user?.profilepicture" :src="user.profilepicture" :alt="`${user.first_name} ${user.last_name}`" class="rounded-full w-[120px] h-[120px]" />
+              <img v-if="previewImage" :src="previewImage" :alt="`${user.first_name} ${user.last_name}`" class="preview-img" />
               <input type="file" @change="handleFileUpload" accept="image/*" />
             </div>
-
-
-
-          <label>Country:</label>
-          <select v-model="user.country">
-            <option v-for="country in countries" :key="country.code" :value="country.name">
-              {{ country.name }}
-            </option>
-          </select>
-
-          <label>Phone Number:</label>
-          <input v-model="user.phonenumber" type="tel" />
-
-          <button type="submit" class="w-full h-[48px] bg-violet-500 text-white mt-2 mb-4 px-4 py-2 font-bold rounded-[8px] hover:bg-violet-700 cursor-pointer transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400">Save Changes</button>
+            <button type="submit" class="w-full h-[48px] bg-violet-500 text-white mt-2 mb-4 px-4 py-2 font-bold rounded-[8px] hover:bg-violet-700 cursor-pointer transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400">Save Changes</button>
           </div>
         </form>
       </div>

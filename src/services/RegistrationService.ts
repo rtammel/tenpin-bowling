@@ -13,6 +13,17 @@ export default class RegistrationService extends BaseService {
       return response.data;
     } catch {
       throw new Error("Could not fetch event data.");
+      
+    }
+  }
+
+  async registerForEvent(squadIds: number[]): Promise<{ message: string }> {
+    try {
+      const response = await this.api.post('/', { squadIds });
+      return response.data;
+    } catch (error) {
+      console.error('Error registering for event:', error);
+      throw new Error("Registration failed.");
     }
   }
 

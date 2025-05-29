@@ -1,6 +1,6 @@
 <template>
-  <div class="my-[80px] px-8 md:px-10 ml:px-16 py-6 ml:pt-20 ml:pb-[72px]">
-    <div v-if="squadData" class="max-w-[1312px] mx-auto bg-white rounded-[20px] p-[32px] border border-slate-200 shadow-xs">
+  <div class="my-[80px] px-[16px] md:px-10 ml:px-16 py-[16px] ml:pt-20 ml:pb-[72px]">
+    <div v-if="squadData" class="max-w-[1312px] mx-auto bg-white rounded-[24px] md:rounded-[30px] p-[16px] md:p-[24px] border border-slate-200 shadow-xs">
       <div :style="{ backgroundImage: `linear-gradient(rgba(77,23,154,0.7),rgba(77,23,154,0.7)),url('${squadData.image_url}')` }" class="text-white px-[42px] py-[80px] lg:p-[112px] bg-cover bg-center text-center mb-[32px] rounded-xl bg-no-repeat">
         <h1 class="text-[28px] lg:text-[32px] font-bold">{{ squadData.event_name }}</h1>
       </div>
@@ -49,7 +49,7 @@
                   {{ player.clubname }}
                 </td>
                 <td class="p-4 whitespace-nowrap text-sm">
-                  {{ player.country }}
+                  {{ player.country || 'Unknown' }}
                 </td>
                 <td class="p-4 whitespace-nowrap text-sm">
                   {{ player.gender }}

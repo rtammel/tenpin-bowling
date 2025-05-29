@@ -12,7 +12,7 @@ export default class UserService extends BaseService {
       const response = await this.api.get('/profile');
       return response.data.user;
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      console.error('Error fetching user profile:', error);
       return null;
     }
   }
@@ -26,7 +26,7 @@ export default class UserService extends BaseService {
       });
       return response.data.user;
     } catch (error) {
-      console.error('Error updating profile:', error);
+      console.error('Error updating user profile:', error);
       return null;
     }
   }
@@ -34,9 +34,19 @@ export default class UserService extends BaseService {
   async getBookings() {
     try {
       const response = await this.api.get('/bookings');
-      return response.data.bookings;
+      return response.data;
     } catch (error) {
-      console.error('Error fetching bookings:', error);
+      console.error('Error fetching user bookings:', error);
+      return null;
+    }
+  }
+
+  async getResults() {
+    try {
+      const response = await this.api.get('/results');
+      return response.data.events;
+    } catch (error) {
+      console.error('Error fetching user results:', error);
       return null;
     }
   }

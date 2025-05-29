@@ -1,5 +1,5 @@
 <template>
-  <header class="fixed inset-x-0 top-0 z-10" :class="menuOpen ? 'h-[100vh] bg-violet-700' : 'bg-white border-b-[1px] border-slate-200 shadow-xs'">
+  <header class="fixed inset-x-0 top-0 z-99" :class="menuOpen ? 'h-[100vh] bg-violet-700' : 'bg-white border-b-[1px] border-slate-200 shadow-xs'">
     <nav class="mx-auto md:px-10" :class="menuOpen ? 'size-full' : ''">
       <div class="md:hidden">
         <div class="flex items-center justify-between px-5 py-[16px]">
@@ -15,8 +15,9 @@
             <div :class="menuOpen ? 'flex flex-col text-[24px]' : ''">
               <RouterLink to="/events" @click="closeMenu" class="font-medium transition" :class="[isActive('/events') ? 'text-violet-600' : '', menuOpen ? 'text-white hover:text-violet-200 pt-[8px] pb-[8px]' : 'hover:text-violet-600']">Events</RouterLink>
               <RouterLink to="/results" @click="closeMenu" class="font-medium transition" :class="[isActive('/results') ? 'text-violet-600' : '', menuOpen ? 'ml-0 text-white hover:text-violet-200 pt-[8px] pb-[8px]' : 'ml-[32px] hover:text-violet-600']">Results</RouterLink>
-              <RouterLink v-if="authStore.isLoggedIn" to="/profile" @click="closeMenu" class="font-medium transition" :class="[isActive('/profile') ? 'text-violet-600' : '', menuOpen ? 'ml-0 text-white hover:text-violet-200 pt-[8px] pb-[8px]' : 'ml-[32px] hover:text-violet-600']">My Profile</RouterLink>
-              <RouterLink v-if="authStore.isLoggedIn" to="/mybookings" @click="closeMenu" class="font-medium transition" :class="[isActive('/mybookings') ? 'text-violet-600' : '', menuOpen ? 'ml-0 text-white hover:text-violet-200 pt-[8px] pb-[8px]' : 'ml-[32px] hover:text-violet-600']">My Bookings</RouterLink>
+              <RouterLink v-if="authStore.isLoggedIn" to="/user/profile" @click="closeMenu" class="font-medium transition" :class="[isActive('/profile') ? 'text-violet-600' : '', menuOpen ? 'ml-0 text-white hover:text-violet-200 pt-[8px] pb-[8px]' : 'ml-[32px] hover:text-violet-600']">Profile</RouterLink>
+              <RouterLink v-if="authStore.isLoggedIn" to="/user/bookings" @click="closeMenu" class="font-medium transition" :class="[isActive('/mybookings') ? 'text-violet-600' : '', menuOpen ? 'ml-0 text-white hover:text-violet-200 pt-[8px] pb-[8px]' : 'ml-[32px] hover:text-violet-600']">My Bookings</RouterLink>
+              <RouterLink v-if="authStore.isLoggedIn" to="/user/results" @click="closeMenu" class="font-medium transition" :class="[isActive('/mybookings') ? 'text-violet-600' : '', menuOpen ? 'ml-0 text-white hover:text-violet-200 pt-[8px] pb-[8px]' : 'ml-[32px] hover:text-violet-600']">My Results</RouterLink>
             </div>
             <div class="flex justify-center mt-[32px]">
               <button v-if="authStore.isLoggedIn" @click="logout" class="cursor-pointer py-[10px] px-[20px] text-[16px] border border-violet-500 transition duration-300 font-bold rounded-[8px] hover:bg-violet-100 hover:text-violet-700">Log Out</button>
@@ -27,7 +28,7 @@
         </div>
       </div>
       <div class="hidden md:flex flex items-center justify-between py-[16px]">
-        <div class="flex-shrink-0">
+        <div class="flex-shrink-0 w-1/3">
           <router-link to="/" class="flex items-center font-bold text-[24px]" :class="menuOpen ? 'text-white' : ''">
             <img src="/images/logo.svg" class="w-[48px] h-[48px] mr-[8px]" alt="Ten Pin" />
             TenPin
@@ -36,13 +37,13 @@
         <div>
           <RouterLink v-if="menuOpen || !isVisible" to="/events" class="font-medium transition" :class="[isActive('/events') ? 'text-violet-600' : '', menuOpen ? 'text-white hover:text-violet-200 pt-[8px] pb-[8px]' : 'hover:text-violet-600']">Events</RouterLink>
           <RouterLink v-if="menuOpen || !isVisible" to="/results" class="font-medium transition" :class="[isActive('/results') ? 'text-violet-600' : '', menuOpen ? 'ml-0 text-white hover:text-violet-200 pt-[8px] pb-[8px]' : 'ml-[32px] hover:text-violet-600']">Results</RouterLink>
-          <RouterLink v-if="menuOpen || isVisible" to="/profile" class="font-medium transition" :class="[isActive('/profile') ? 'text-violet-600' : '', menuOpen ? 'ml-0 text-white hover:text-violet-200 pt-[8px] pb-[8px]' : 'ml-[32px] hover:text-violet-600']">My Profile</RouterLink>
-          <RouterLink v-if="menuOpen || isVisible" to="/mybookings" class="font-medium transition" :class="[isActive('/mybookings') ? 'text-violet-600' : '', menuOpen ? 'ml-0 text-white hover:text-violet-200 pt-[8px] pb-[8px]' : 'ml-[32px] hover:text-violet-600']">My Bookings</RouterLink>
+          <RouterLink v-if="menuOpen || isVisible" to="/user/profile" class="font-medium transition" :class="[isActive('/user/profile') ? 'text-violet-600' : '', menuOpen ? 'ml-0 text-white hover:text-violet-200 pt-[8px] pb-[8px]' : 'ml-[32px] hover:text-violet-600']">Profile</RouterLink>
+          <RouterLink v-if="menuOpen || isVisible" to="/user/bookings" class="font-medium transition" :class="[isActive('/user/bookings') ? 'text-violet-600' : '', menuOpen ? 'ml-0 text-white hover:text-violet-200 pt-[8px] pb-[8px]' : 'ml-[32px] hover:text-violet-600']">Bookings</RouterLink>
+          <RouterLink v-if="menuOpen || isVisible" to="/user/results" class="font-medium transition" :class="[isActive('/user/results') ? 'text-violet-600' : '', menuOpen ? 'ml-0 text-white hover:text-violet-200 pt-[8px] pb-[8px]' : 'ml-[32px] hover:text-violet-600']">Results</RouterLink>
         </div>
-        <div class="flex items-center">
-          <RouterLink v-if="!isVisible" to="/profile" class="hover:text-violet-600">
-            <img v-if="profilePicture" :src="'http://localhost:3000'+authStore.user?.profilepicture" :alt="authStore.user?.first_name" class="w-[48px] h-[48px] rounded-full"/>
-            <span v-else>{{ authStore.user?.first_name }}</span>
+        <div class="flex items-center w-1/3 justify-end">
+          <RouterLink v-if="!isVisible && authStore.isLoggedIn" to="/user/profile" class="hover:text-violet-600">
+            <img :src="authStore.user?.profilepicture || `${baseUrl}images/missing.png`" :alt="`${authStore.user?.first_name} ${authStore.user?.last_name}`" class="w-[48px] h-[48px] rounded-full" />
           </RouterLink>
           <button v-if="isVisible" @click="authStore.logout" class="ml-[16px] cursor-pointer py-[10px] px-[20px] text-[16px] border border-violet-500 transition duration-300 font-bold rounded-[8px] hover:bg-violet-100">Log Out</button>
           <RouterLink v-if="!authStore.isLoggedIn" to="/login" class="py-[10px] px-[20px] text-[16px] border border-violet-500 transition duration-300 font-bold rounded-[8px] hover:bg-violet-100">Log In</RouterLink>
@@ -59,11 +60,11 @@ import { useAuthStore } from "../store/auth";
 import { useRoute, RouterLink } from "vue-router";
 
 const menuOpen = ref(false);
+const baseUrl = import.meta.env.BASE_URL || '/';
 const route = useRoute();
 const authStore = useAuthStore();
-const isVisible = computed(() => route.path === "/profile" || route.path === "/mybookings");
+const isVisible = computed(() => route.path.includes("/user/"));
 const isActive = (path: string) => route.path.startsWith(path);
-const profilePicture = computed(() => authStore.user?.profilepicture);
 
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value;

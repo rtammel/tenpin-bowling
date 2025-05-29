@@ -33,7 +33,7 @@
             <RouterLink :to="`players/${player.player_id}`" class="underline hover:text-violet-600">{{ player.fullname }}</RouterLink>
           </td>
           <td class="p-4 whitespace-nowrap text-sm">
-            {{ player.country }}
+            {{ player.country || 'Unknown' }}
           </td>
           <td class="p-4 whitespace-nowrap text-sm">
             {{ player.total_score }}
